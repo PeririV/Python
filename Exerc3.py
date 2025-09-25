@@ -1,4 +1,4 @@
-import math
+#import math
 
 # 4 - Faça um algoritmo que receba um número inteiro e imprima na tela o seu antecessor e o seu sucessor.
 
@@ -14,6 +14,7 @@ import math
 # 6 - Faça um algoritmo que leia um valor qualquer e imprima na tela com um reajuste de 5%.
 
 import math
+from itertools import count
 
 #SalMin = float(1293.20)
 #SalMinUser = float(input("Insira seu salário: "))
@@ -80,5 +81,71 @@ print(IMC)
 """
 
 #  10 - Faça um algoritmo que leia três notas obtidas por um aluno, e imprima na tela a média das notas.
+#  11 - Faça um algoritmo que leia quatro notas obtidas por um aluno, calcule a média das nota obtidas,
+#  imprima na tela o nome do aluno e se o aluno foi aprovado ou reprovado.
+#  Para o aluno ser considerado aprovado sua média final deve ser maior ou igual a 7.
+
+import colorama
+from colorama import Fore, Back, Style
+
+#nome = str(input("Nome do Aluno(a): "))
+
+#notas = []
+#for i in range(4):
+    #nota = float(input(f"Insira a {i+1}o Nota: "))
+    #   notas.append(nota)
+
+#media = sum(notas) / len(notas)
+#try:
 
 
+#   if media <= 6.9:
+        #print(f"Minha senhora, sinto muito lhe informar, más seu filho {nome}, "
+
+
+#     f"é desprovido de raciocinio \nEle(a) teve a média de {media} anual")
+        #print(Fore.RED + Back.BLACK + "(R E P R O V A D O)" + Style.RESET_ALL)
+        #else:
+        #print(f"Caramba jovem, TU É NOSSA SALVAÇÃO {nome},\n Você tirou {media}")
+        #        print(Fore.GREEN + Back.BLACK + "(A P R O V A D O)" + Style.RESET_ALL)
+
+#except:
+#    print("TENTE NOVAMENTE")
+
+
+
+# SEGUNDA VERSAO
+
+def notas():
+    try:
+        aluno = input("Insira o nome do aluno: ")
+        notas = []
+
+        for i in range(4):
+            while True:
+                try:
+                    nota = int(input(f"Insira a {i +1}o Nota: "))
+                    if 0 <= nota <= 10:
+                        notas.append(nota)
+                        break
+                    else:
+                        print("Notas devem estar entre 0 e 10 !!!")
+                except ValueError:
+                    print("Tente novamente, más dessa vez insira numeros de 0 a 10 !!!")
+
+        media = sum(notas) / len(notas)
+
+        if media <= 6.9:
+            print(f"Minha senhora, sinto muito lhe informar, más seu filho {aluno}é desprovido de raciocinio \nEle(a) teve a média de {media} anual")
+            print(Fore.RED + Back.BLACK + "(R E P R O V A D O)" + Style.RESET_ALL)
+        else:
+            print(f"Caramba jovem, TU É NOSSA SALVAÇÃO {aluno},\n Você tirou {media}")
+            print(Fore.GREEN + Back.BLACK + "(A P R O V A D O)" + Style.RESET_ALL)
+
+    except KeyboardInterrupt:
+        print("\nPrograma interrompido pelo usuário")
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
+
+
+notas()

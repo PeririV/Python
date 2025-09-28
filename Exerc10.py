@@ -12,6 +12,7 @@
 from idlelib.multicall import MC_ENTER
 from colorama import Fore, Back, Style
 import os
+
 # Limpar tela (opcional)
 os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -29,7 +30,7 @@ try:
                                   "4 - Parcelado no cartão em três vezes ou mais, preço normal do produto mais juros de 10%.")
 
         try:
-            mtd_Pagamento = int(input("Insira a forma de pagamento: "))
+            mtd_Pagamento = int(input("\nInsira a forma de pagamento: "))
             if mtd_Pagamento not in opc:
                 print(Fore.RED + "\n❌ Opção inválida! Digite um número entre 1 e 4." + Style.RESET_ALL)
         except ValueError:
@@ -39,17 +40,17 @@ try:
     if mtd_Pagamento == 1:
         desconto = valor * 0.15
         newprice = valor - desconto
-        print(f"O produto de R$ {valor}, recebeu desconto de 15% R$ {desconto}, agora custa R$ {newprice}")
+        print(f"\nO produto de R$ {valor:.2f}, recebeu desconto de 15% R$ {desconto:.2f}, agora custa R$ {newprice:.2f}")
     elif mtd_Pagamento == 2:
         desconto = valor * 0.10
         newprice = valor - desconto
-        print(f"O produto de R$ {valor}, recebeu desconto de 10% R$ {desconto}, agora custa R$ {newprice}")
+        print(f"\nO produto de R$ {valor:.2f}, recebeu desconto de 10% R$ {desconto:.2f}, agora custa R$ {newprice:.2f}")
     elif mtd_Pagamento == 3:
-        print(f"O produto custou R$ {valor}")
+        print(f"\nO produto custou R$ {valor:.2f}")
     elif mtd_Pagamento == 4:
         juros = valor * 0.10
         newprice = valor + juros
-        print(f"O produto de R$ {valor}, o juros sera de 10% R$ {juros}, agora custa R$ {newprice}")
+        print(f"\nO produto de R$ {valor:.2f}, o juros sera de 10% R$ {juros}, agora custa R$ {newprice:.2f}")
     else:
         print("Tente Novamente, Escolha a Forma de Pagamento")
 except ValueError:

@@ -137,3 +137,11 @@ else:
 # distância percorrida e a quantidade de litros utilizados para fazer a viagem.
 # Fórmula: distância = tempo x velocidade.
 #           litros usados = distância / 12.
+
+Km = 12
+Distancia = int(input("Distancia Km "))
+veloMedia = int(input("Velocidade média Km "))
+tempo =  Distancia / veloMedia
+litros = Distancia / Km
+
+print(f"Litros gastos com a viagem L {litros:.2f}\nTempo de viagem {tempo:.2f} Horas")

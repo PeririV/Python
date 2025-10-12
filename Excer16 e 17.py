@@ -18,8 +18,7 @@ else:
     print("Chapa não parceiro")
 
 """
-
-
+from itertools import count
 
 """
 #  17 - Faça um algoritmo que leia uma temperatura em Fahrenheit e calcule a temperatura correspondente em grau Celsius. Imprima na tela as duas temperaturas.
@@ -32,4 +31,17 @@ Celsius = (5 * (Temp - 32) / 9)
 
 print(Celsius)
 """
+#18 - Francisco tem 1,50m e cresce 2 centímetros por ano,
+# enquanto Sara tem 1,10m e cresce 3 centímetros por ano.
+# Faça um algoritmo que calcule e imprima na tela em quantos
+# anos serão necessários para que Francisco seja maior que Sara.
 
+Fran = 1.50
+Sara = 1.10
+Anos = 0
+
+while Fran >= Sara:
+    Anos += 1
+    Fran += 0.02
+    Sara += 0.03
+print(f"Serão necessarios {Anos} Anos para que Francisco seja Menor que Sara")

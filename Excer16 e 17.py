@@ -48,7 +48,7 @@ print(f"Serão necessarios {Anos} Anos para que Francisco seja Menor que Sara")
 """
 
 # 19 - Faça um algoritmo que imprima na tela a tabuada de 1 até 10.
-
+"""
 Tabuada = 0
 
 while Tabuada <= 9:
@@ -60,3 +60,26 @@ while Tabuada <= 9:
             Cont += 1
             Resultado = Tabuada * Cont
             print(f"{Tabuada} * {Cont} = {Resultado}")
+"""
+"""
+# 20 - Faça um algoritmo que receba um valor inteiro e imprima na tela a sua tabuada.
+
+Tabuada = int(input("Você quer a TAABUADA DO...: "))
+Cont = 0
+print(f"TABUADA DO {Tabuada}\n")
+while Cont <= 9:
+    Cont += 1
+    resultado = Tabuada * Cont
+    print(f"{Tabuada} * {Cont} = {resultado}")
+"""
+
+# 21 - Faça um algoritmo que mostre um valor aleatório entre 0 e 100.
+"""
+import random
+
+
+print("Jogo da advinhação: ", random.randint(1, 100))
+"""
+# 22 - Faça um algoritmo que leia dois valores inteiros A e B,
+# imprima na tela o quociente e o resto da divisão inteira entre eles.
+

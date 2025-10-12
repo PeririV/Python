@@ -19,6 +19,7 @@ else:
 
 """
 from itertools import count
+from os import PRIO_PGRP
 
 """
 #  17 - Faça um algoritmo que leia uma temperatura em Fahrenheit e calcule a temperatura correspondente em grau Celsius. Imprima na tela as duas temperaturas.
@@ -80,6 +81,59 @@ import random
 
 print("Jogo da advinhação: ", random.randint(1, 100))
 """
+
 # 22 - Faça um algoritmo que leia dois valores inteiros A e B,
 # imprima na tela o quociente e o resto da divisão inteira entre eles.
+"""
+A = int(input("Primeiro Valor: "))
+B = int(input("Segundo Valor: "))
 
+dvsA = A // B
+rstA = A % B
+print(f"quociente de {A} e {B} = {dvsA}, Resto da divisão de {A} e {B} = {rstA}")
+
+"""
+
+# 23 - Faça um algoritmo que efetue o cálculo do salário líquido de um professor.
+# As informações fornecidas serão: valor da hora aula, número de aulas lecionadas
+# no mês e percentual de desconto do INSS. Imprima na tela o salário líquido final.
+"""
+
+SalProf = float(input("Salario R$ "))
+
+ValorH = (SalProf / 21) / 10
+
+if SalProf <= 1518.00:
+    Desc = SalProf * 0.075
+    SalProf = SalProf - Desc
+    print(f"Seu Salario após o desconto de 7,5%  \nR$ {Desc:.2f}, \nR$ {SalProf:.2f} \nValor Hora R$ {ValorH:.2f} com 21 dias trabalhados")
+
+elif SalProf >= 1518.01 and SalProf <= 2793.88:
+    Desc = SalProf * 0.09
+    SalProf = SalProf - Desc
+    print(f"Seu Salario após o desconto de 9%  \nR$ {Desc:.2f},  \nR$ {SalProf:.2f} \nValor Hora R$ {ValorH:.2f} com 21 dias trabalhados")
+
+elif SalProf >= 2793.89 and SalProf <= 4190.83:
+    Desc = SalProf * 0.12
+    SalProf = SalProf - Desc
+    print(f"Seu Salario após o desconto de 12% \nR$ {Desc:.2f}, \nR$ {SalProf:.2f} \nValor Hora R$ {ValorH:.2f} com 21 dias trabalhados")
+
+elif SalProf >= 4190.84 and SalProf <= 8157.41:
+    Desc = SalProf * 0.14
+    SalProf = SalProf - Desc
+    print(f"Seu Salario após o desconto de 14%  \nR$ {Desc:.2f}, \nR$ {SalProf:.2f} \nValor Hora R$ {ValorH:.2f} com 21 dias trabalhados")
+
+else:
+    Desc = SalProf * 0.14
+    SalProf = SalProf - Desc
+    print(f"Me contrata como assistente, tu ta cheio da grana\nDesconto de 14% {Desc:.2f} \n R$ {SalProf:.2f}\nValor Hora R$ {ValorH:.2f}")
+
+"""
+
+
+#22 - Faça um algoritmo que calcule a quantidade de litros de combustível
+# gastos em uma viagem, sabendo que o carro faz 12km com um litro. Deve-se
+# fornecer ao usuário o tempo que será gasto na viagem a sua velocidade média,
+# distância percorrida e a quantidade de litros utilizados para fazer a viagem.
+# Fórmula: distância = tempo x velocidade.
+#           litros usados = distância / 12.

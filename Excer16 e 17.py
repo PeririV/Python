@@ -35,7 +35,7 @@ print(Celsius)
 # enquanto Sara tem 1,10m e cresce 3 centímetros por ano.
 # Faça um algoritmo que calcule e imprima na tela em quantos
 # anos serão necessários para que Francisco seja maior que Sara.
-
+"""
 Fran = 1.50
 Sara = 1.10
 Anos = 0
@@ -45,3 +45,18 @@ while Fran >= Sara:
     Fran += 0.02
     Sara += 0.03
 print(f"Serão necessarios {Anos} Anos para que Francisco seja Menor que Sara")
+"""
+
+# 19 - Faça um algoritmo que imprima na tela a tabuada de 1 até 10.
+
+Tabuada = 0
+
+while Tabuada <= 9:
+    print("TABUADA DO ", Tabuada + 1)
+    Tabuada += 1
+    Cont = 0
+
+    while Cont <= 9:
+            Cont += 1
+            Resultado = Tabuada * Cont
+            print(f"{Tabuada} * {Cont} = {Resultado}")

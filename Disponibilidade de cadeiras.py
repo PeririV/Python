@@ -6,12 +6,7 @@
 # Calcule e mostre estatísticas totais"
 
 linha = ["A", "B", "C", "D"]
-coluna = 0
-
 
 for i in linha:
-
-    while coluna <= 6:
-        coluna = str(coluna)
-        lugar = i + coluna
-        print(lugar)
+    for num in range(1,6):
+        print(f"{i}-{num}")

@@ -23,7 +23,6 @@ for i in linha:
     for num in range(1,6):
         idt = f"{i}{num}"
         color = random.choice(slot)
-        print(color)
-        print(idt.center(12), end=" ")
+        print(color, idt.center(10), end=" ")
         print(Style.RESET_ALL, end=" ")
     print()

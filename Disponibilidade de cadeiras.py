@@ -10,19 +10,26 @@ from colorama import Fore, Back, Style
 import random
 linha = ["A", "B", "C", "D"]
 
-#for i in linha:
-#    for num in range(1,6):
-#        print(f"{i}-{num}")
 print(Fore.GREEN + "--" * 30)
 texto = "-- Cinema com filmes --"
 print(Fore.RED + Back.BLACK + texto.center(60) + Style.RESET_ALL)
 print(Fore.GREEN + "--" * 30 + Style.RESET_ALL)
 slot = [Fore.GREEN , Fore.RED ]
+countR = 0
+countG = 0
 
 for i in linha:
     for num in range(1,6):
         idt = f"{i}{num}"
         color = random.choice(slot)
+        if color == Fore.RED:
+            countR += 1
+        else:
+            countG += 1
         print(color, idt.center(10), end=" ")
         print(Style.RESET_ALL, end=" ")
     print()
+
+print(f"Quantidade de Lugares Disponiveis: {slot[0]}{countG}" + Style.RESET_ALL)
+print(f"Quantidade de Lugares Ocupados: {slot[1]}{countR}" + Style.RESET_ALL)
+

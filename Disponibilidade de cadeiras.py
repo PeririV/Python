@@ -4,7 +4,19 @@
 # Liste todas as cadeiras disponíveis
 # Liste todas as cadeiras indisponíveis
 # Calcule e mostre estatísticas totais"
-import random
+
+# Use dicionários para armazenar o estado das cadeiras
+# Valide sempre as entradas do usuário
+# Trate erros com try/except
+# Modularize em funções pequenas e específicas
+# Use list comprehension para filtrar cadeiras
+#  DESAFIO BÔNUS:
+# Crie um sistema onde o usuário pode:
+# Ver mapa colorido
+# Reservar múltiplas cadeiras
+# Cancelar reservas
+# Ver histórico de operações
+# Salvar/recuperar estado
 
 from colorama import Fore, Back, Style
 import random

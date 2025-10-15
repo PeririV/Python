@@ -33,9 +33,11 @@ for i in linha:
         print(color, idt.center(10), end=" ")
         print(Style.RESET_ALL, end=" ")
     print()
-
+perctf = (countG / (countR + countG)) * 100
+perctb = (countR / (countR + countG)) * 100
 print(f"Quantidade de Lugares Disponiveis: {slot[0]}{countG}" + Style.RESET_ALL)
-print(f"Cadeiras livres: \n{free}")
+print(f"Cadeiras livres: \n{slot[0]}{free}\n{perctf:.0f}%" + Style.RESET_ALL)
 print(f"Quantidade de Lugares Ocupados: {slot[1]}{countR}" + Style.RESET_ALL)
-print(f"Cadeiras Ocupadas: \n{busy}")
+print(f"Cadeiras Ocupadas: \n{slot[1]}{busy}\n{perctb:.0f}%" + Style.RESET_ALL)
+
 

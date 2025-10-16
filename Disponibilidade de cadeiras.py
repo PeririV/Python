@@ -17,30 +17,57 @@
 # Cancelar reservas
 # Ver histórico de operações
 # Salvar/recuperar estado
+from fileinput import close
 
 from colorama import Fore, Back, Style
 import random
 
 
 def menu():
-    print(Fore.GREEN + "--" * 30 + Style.RESET_ALL)
-    texto = "-- MENU DO CINEMA --"
-    print(Fore.RED + Back.BLACK + texto.center(60) + Style.RESET_ALL)
-    print(Fore.GREEN + "--" * 30 + Style.RESET_ALL)
+    while True:
+        print(Fore.GREEN + "--" * 30 + Style.RESET_ALL)
+        texto = "-- MENU DO CINEMA --"
+        print(Fore.RED + Back.BLACK + texto.center(60) + Style.RESET_ALL)
+        print(Fore.GREEN + "--" * 30 + Style.RESET_ALL)
 
-    # Menu options
-    print("Selecione uma das opções abaixo:")
-    print("1 - Ver Mapa Das Cadeiras")
-    print("2 - Escolher Assentos")
-    print("3 - Cancelar Assentos")
-    print("4 - Assentos Disponiveis")
-    print("5 - Estastiticas Dos Assentos")
-    print("6 - Sair")
+        # Menu options
+        print("Selecione uma das opções abaixo:")
+        print("1 - Ver Mapa Das Cadeiras")
+        print("2 - Escolher Assentos")
+        print("3 - Cancelar Assentos")
+        print("4 - Assentos Disponiveis")
+        print("5 - Estastiticas Dos Assentos")
+        print("6 - Sair")
 
-    # Input with styling
-    option = input(Fore.LIGHTYELLOW_EX + Back.BLACK + "Escolha: " + Style.RESET_ALL)
-    selection = menu
-    print(f"Você selecionou a opção: {selection}")
+        # Input with styling
+        option = input(Fore.LIGHTYELLOW_EX + Back.BLACK + "Escolha: " + Style.RESET_ALL)
+        print(f"Você selecionou a opção: {option}")
+
+        try:
+            option_int = int(option)
+        except ValueError:
+            print("Por favor, digite um número válido.")
+            continue
+
+        if option == 1:
+
+            return
+        elif option == 2:
+            escolha_assento()
+        elif option == 3:
+            return
+        elif option == 4:
+            return
+        elif option == 5:
+            return
+        elif option == 6:
+            exit()
+            break
+        else:
+            print(Fore.RED + Back.BLACK + "Opção Invalida, Tente Novamente!" + Style.RESET_ALL)
+            continue
+        break
+
     return int(option)
 
 
@@ -55,6 +82,9 @@ def escolha_assento():
         60) + Style.RESET_ALL + "\n" + Fore.LIGHTYELLOW_EX + Back.BLACK + intro2.center(
         60) + Style.RESET_ALL + "\nAssentos: ")).capitalize().split(",")
     return
+
+def exit():
+    print("Saindo do sistema...")
 
 linha = ["A", "B", "C", "D"]
 

@@ -4,7 +4,7 @@
 # Liste todas as cadeiras disponíveis
 # Liste todas as cadeiras indisponíveis
 # Calcule e mostre estatísticas totais"
-
+ ########################################
 # Use dicionários para armazenar o estado das cadeiras
 # Valide sempre as entradas do usuário
 # Trate erros com try/except
@@ -20,6 +20,10 @@
 
 from colorama import Fore, Back, Style
 import random
+
+
+
+
 linha = ["A", "B", "C", "D"]
 
 print(Fore.GREEN + "--" * 30)
@@ -27,8 +31,13 @@ texto = "-- Cinema com filmes --"
 print(Fore.RED + Back.BLACK + texto.center(60) + Style.RESET_ALL)
 print(Fore.GREEN + "--" * 30 + Style.RESET_ALL)
 slot = [Fore.GREEN , Fore.RED ]
+intro = "Olá, Seja Muito Bem Vindo."
+intro2 = "Escolha o Assento Desejado, Ex: (A1, B2, C3...): "
+Cchosed = str(input(Fore.LIGHTYELLOW_EX + Back.BLACK + intro.center(60) + Style.RESET_ALL + "\n" + Fore.LIGHTYELLOW_EX + Back.BLACK  + intro2.center(60) + Style.RESET_ALL + "\nAssentos: ")).capitalize().split(",")
+
 countR = 0
 countG = 0
+#cadeiras = {}
 busy = []
 free = []
 
@@ -48,8 +57,8 @@ for i in linha:
 perctf = (countG / (countR + countG)) * 100
 perctb = (countR / (countR + countG)) * 100
 print(f"Quantidade de Lugares Disponiveis: {slot[0]}{countG}" + Style.RESET_ALL)
-print(f"Cadeiras livres: \n{slot[0]}{free}\n{perctf:.0f}%" + Style.RESET_ALL)
+print(f"Cadeiras livres: {slot[0]}{perctf:.0f}%\n{free}\n" + Style.RESET_ALL)
 print(f"Quantidade de Lugares Ocupados: {slot[1]}{countR}" + Style.RESET_ALL)
-print(f"Cadeiras Ocupadas: \n{slot[1]}{busy}\n{perctb:.0f}%" + Style.RESET_ALL)
+print(f"Cadeiras Ocupadas: {slot[1]}{perctb:.0f}%\n{busy}\n" + Style.RESET_ALL)
 
 

@@ -22,7 +22,37 @@ from colorama import Fore, Back, Style
 import random
 
 
+def menu():
+    print(Fore.GREEN + "--" * 30 + Style.RESET_ALL)
+    texto = "-- MENU DO CINEMA --"
+    print(Fore.RED + Back.BLACK + texto.center(60) + Style.RESET_ALL)
+    print(Fore.GREEN + "--" * 30 + Style.RESET_ALL)
 
+    # Menu options
+    print("Selecione uma das opções abaixo:")
+    print("1 - Ver Mapa Das Cadeiras")
+    print("2 - Escolher Assentos")
+    print("3 - Cancelar Assentos")
+    print("4 - Sair")
+
+    # Input with styling
+    option = input(Fore.LIGHTYELLOW_EX + Back.BLACK + "Escolha: " + Style.RESET_ALL)
+    selection = menu
+    print(f"Você selecionou a opção: {selection}")
+    return int(option)
+
+
+menu()
+
+
+
+def escolha_assento():
+    intro = "Olá, Seja Muito Bem Vindo."
+    intro2 = "Escolha o Assento Desejado, Ex: (A1, B2, C3...): "
+    Cchosed = str(input(Fore.LIGHTYELLOW_EX + Back.BLACK + intro.center(
+        60) + Style.RESET_ALL + "\n" + Fore.LIGHTYELLOW_EX + Back.BLACK + intro2.center(
+        60) + Style.RESET_ALL + "\nAssentos: ")).capitalize().split(",")
+    return
 
 linha = ["A", "B", "C", "D"]
 
@@ -31,10 +61,7 @@ texto = "-- Cinema com filmes --"
 print(Fore.RED + Back.BLACK + texto.center(60) + Style.RESET_ALL)
 print(Fore.GREEN + "--" * 30 + Style.RESET_ALL)
 slot = [Fore.GREEN , Fore.RED ]
-intro = "Olá, Seja Muito Bem Vindo."
-intro2 = "Escolha o Assento Desejado, Ex: (A1, B2, C3...): "
-Cchosed = str(input(Fore.LIGHTYELLOW_EX + Back.BLACK + intro.center(60) + Style.RESET_ALL + "\n" + Fore.LIGHTYELLOW_EX + Back.BLACK  + intro2.center(60) + Style.RESET_ALL + "\nAssentos: ")).capitalize().split(",")
-
+escolha_assento()
 countR = 0
 countG = 0
 #cadeiras = {}

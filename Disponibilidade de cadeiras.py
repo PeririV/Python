@@ -33,7 +33,9 @@ def menu():
     print("1 - Ver Mapa Das Cadeiras")
     print("2 - Escolher Assentos")
     print("3 - Cancelar Assentos")
-    print("4 - Sair")
+    print("4 - Assentos Disponiveis")
+    print("5 - Estastiticas Dos Assentos")
+    print("6 - Sair")
 
     # Input with styling
     option = input(Fore.LIGHTYELLOW_EX + Back.BLACK + "Escolha: " + Style.RESET_ALL)

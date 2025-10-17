@@ -55,6 +55,18 @@ def cancelar_assento():
 
     print("Assentos Atuais", cadeiras)
 
+def estastistica():
+    countR = 0
+    countG = 0
+    perctf = (countG / (countR + countG)) * 100
+    perctb = (countR / (countR + countG)) * 100
+    print(f"Cadeiras livres: {slot[0]}{perctf:.0f}%\n{free}\n" + Style.RESET_ALL)
+    print(f"Cadeiras Ocupadas: {slot[1]}{perctb:.0f}%\n{busy}\n" + Style.RESET_ALL)
+
+def map():
+    slot = bool
+    slot = random.slot(True, False)
+
 
 def mapa():
     countR = 0

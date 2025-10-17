@@ -22,8 +22,6 @@ from itertools import count
 from colorama import Fore, Back, Style
 import random
 
-linha = ["A", "B", "C", "D"]
-
 cadeiras = []
 busy = []
 free = []
@@ -55,20 +53,108 @@ def cancelar_assento():
 
     print("Assentos Atuais", cadeiras)
 
+def Assentos_Disp():
+    if not free:
+        print(f"{Fore.YELLOW}Não há cadeiras disponíveis no momento.{Style.RESET_ALL}")
+        return
+
+    print("\n" + "-" * 40)
+    print(f"{Fore.GREEN}CADEIRAS DISPONÍVEIS{Style.RESET_ALL}".center(40))
+    print("-" * 40)
+
+    print(f"{Fore.GREEN}Cadeiras livres: {len(free)} cadeira(s){Style.RESET_ALL}")
+    print("Cadeiras:", ", ".join(free))
+
+    # Mostrar em formato de grid
+    print("\nMapa de disponíveis:")
+    linha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+    for i in linha:
+        for num in range(1, 6):
+            idt = f"{i}{num}"
+            if idt in free:
+                print(f"{Fore.GREEN}{idt.center(5)}{Style.RESET_ALL}", end=" ")
+            else:
+                print(f"{Fore.RED}{idt.center(5)}{Style.RESET_ALL}", end=" ")
+        print()
+
 def estastistica():
-    countR = 0
-    countG = 0
-    perctf = (countG / (countR + countG)) * 100
-    perctb = (countR / (countR + countG)) * 100
-    print(f"Cadeiras livres: {slot[0]}{perctf:.0f}%\n{free}\n" + Style.RESET_ALL)
-    print(f"Cadeiras Ocupadas: {slot[1]}{perctb:.0f}%\n{busy}\n" + Style.RESET_ALL)
+    if not free and not busy:
+        print("Nenhum dado disponível para estatísticas.")
+        return
+
+    total_cadeiras = len(free) + len(busy)
+
+    if total_cadeiras > 0:
+        perct_livres = (len(free) / total_cadeiras) * 100
+        perct_ocupadas = (len(busy) / total_cadeiras) * 100
+    else:
+        perct_livres = 0
+        perct_ocupadas = 0
+
+    print("\n" + "=" * 50)
+    print("ESTATÍSTICAS DO CINEMA".center(50))
+    print("=" * 50)
+
+    print(f"{Fore.GREEN}Cadeiras Livres: {len(free)} ({perct_livres:.1f}%){Style.RESET_ALL}")
+    print(f"Cadeiras livres: {free}")
+
+    print(f"{Fore.RED}Cadeiras Ocupadas: {len(busy)} ({perct_ocupadas:.1f}%){Style.RESET_ALL}")
+    print(f"Cadeiras ocupadas: {busy}")
+
+    print(f"Total de cadeiras: {total_cadeiras}")
+    print("=" * 50)
+def mapa():
+    global free, busy
+    free = []
+    busy = []
+
+    print("\n" + Fore.GREEN + "==" * 30)
+    texto = "CINEMA - MAPA COMPLETO"
+    print(Fore.RED + Back.BLACK + texto.center(60) + Style.RESET_ALL)
+    print(Fore.GREEN + "==" * 30 + Style.RESET_ALL)
+
+    # Cabeçalho da tela
+    print(f"{Fore.CYAN}TELA{Style.RESET_ALL}".center(60))
+    print(f"{Fore.CYAN}■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■{Style.RESET_ALL}".center(60))
+    print()
+
+    # Legendas
+    print(f"{Fore.GREEN}□ Disponível{Style.RESET_ALL} | {Fore.RED}■ Ocupado{Style.RESET_ALL}")
+    print()
+
+    linha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+    slot = [Fore.GREEN, Fore.RED]
+
+    # Mapa das cadeiras
+    for i in linha:
+        print(f"Fileira {i}: ", end="")
+        for num in range(1, 6):
+            idt = f"{i}{num}"
+            color = random.choice(slot)
+
+            if color == Fore.RED:
+                busy.append(idt)
+            else:
+                free.append(idt)
+
+            # Usar símbolos visuais
+            simbolo = "■" if color == Fore.RED else "□"
+            print(color + simbolo + Style.RESET_ALL, end="  ")
+        print()  # Nova linha para próxima fileira
+
+    # Estatísticas após gerar o mapa
+    total_cadeiras = len(free) + len(busy)
+    if total_cadeiras > 0:
+        perct_livres = (len(free) / total_cadeiras) * 100
+        perct_ocupadas = (len(busy) / total_cadeiras) * 100
+    else:
+        perct_livres = 0
+        perct_ocupadas = 0
+
+    print(f"\n{Fore.GREEN}Lugares Disponíveis: {len(free)} ({perct_livres:.1f}%){Style.RESET_ALL}")
+    print(f"{Fore.RED}Lugares Ocupados: {len(busy)} ({perct_ocupadas:.1f}%){Style.RESET_ALL}")
 
 def map():
-    slot = bool
-    slot = random.slot(True, False)
-
-
-def mapa():
     countR = 0
     countG = 0
     print(Fore.GREEN + "--" * 30)
@@ -134,9 +220,9 @@ def menu():
         elif option == 3:
             cancelar_assento()
         elif option == 4:
-            return
+            Assentos_Disp()
         elif option == 5:
-            return
+            estastistica()
         elif option == 6:
             exit()
             break

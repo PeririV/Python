@@ -30,7 +30,7 @@ free = []
 def escolha_assento():
     intro = "Olá, Seja Muito Bem Vindo."
     intro2 = "Escolha o Assento Desejado, Ex: (A1, B2, C3...): "
-    Cchosed = str(input(Fore.LIGHTYELLOW_EX + Back.BLACK + intro.center(
+    Cchosed = int(input(Fore.LIGHTYELLOW_EX + Back.BLACK + intro.center(
         60) + Style.RESET_ALL + "\n" + Fore.LIGHTYELLOW_EX + Back.BLACK + intro2.center(
         60) + Style.RESET_ALL + "\nAssentos: ")).strip().capitalize().split(",")
     cadeiras.append(Cchosed)
@@ -39,6 +39,14 @@ def escolha_assento():
 
 def exit():
     print(Fore.BLACK + Back.RED + "Saindo do sistema..." + Style.RESET_ALL)
+
+def cancelar_assento():
+    intro = "Qual Assento Gostaria de Remover? "
+    intro2 = "Assento: "
+    Cchosed = int(input(Fore.LIGHTYELLOW_EX + Back.BLACK + intro.center(
+        60) + Style.RESET_ALL + "\n" + Fore.LIGHTYELLOW_EX + Back.BLACK + intro2.center(
+        60) + Style.RESET_ALL + "\nAssentos: ")).strip().capitalize().split(",")
+    cadeiras.remove()
 
 def mapa():
     countR = 0
@@ -68,6 +76,7 @@ def mapa():
         print(f"Cadeiras livres: {slot[0]}{perctf:.0f}%\n{free}\n" + Style.RESET_ALL)
         print(f"Quantidade de Lugares Ocupados: {slot[1]}{countR}" + Style.RESET_ALL)
         print(f"Cadeiras Ocupadas: {slot[1]}{perctb:.0f}%\n{busy}\n" + Style.RESET_ALL)
+
 
 
 def menu():
@@ -103,7 +112,7 @@ def menu():
         elif option == 2:
             escolha_assento()
         elif option == 3:
-            return
+            cancelar_assento()
         elif option == 4:
             return
         elif option == 5:

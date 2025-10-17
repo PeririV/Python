@@ -17,6 +17,7 @@
 # Cancelar reservas
 # Ver histórico de operações
 # Salvar/recuperar estado
+from itertools import count
 
 from colorama import Fore, Back, Style
 import random
@@ -30,7 +31,7 @@ free = []
 def escolha_assento():
     intro = "Olá, Seja Muito Bem Vindo."
     intro2 = "Escolha o Assento Desejado, Ex: (A1, B2, C3...): "
-    Cchosed = int(input(Fore.LIGHTYELLOW_EX + Back.BLACK + intro.center(
+    Cchosed = str(input(Fore.LIGHTYELLOW_EX + Back.BLACK + intro.center(
         60) + Style.RESET_ALL + "\n" + Fore.LIGHTYELLOW_EX + Back.BLACK + intro2.center(
         60) + Style.RESET_ALL + "\nAssentos: ")).strip().capitalize().split(",")
     cadeiras.append(Cchosed)
@@ -42,11 +43,18 @@ def exit():
 
 def cancelar_assento():
     intro = "Qual Assento Gostaria de Remover? "
-    intro2 = "Assento: "
-    Cchosed = int(input(Fore.LIGHTYELLOW_EX + Back.BLACK + intro.center(
+    intro2 = "..." * 15
+    Cchosed = str(input(Fore.LIGHTYELLOW_EX + Back.BLACK + intro.center(
         60) + Style.RESET_ALL + "\n" + Fore.LIGHTYELLOW_EX + Back.BLACK + intro2.center(
-        60) + Style.RESET_ALL + "\nAssentos: ")).strip().capitalize().split(",")
-    cadeiras.remove()
+        60) + Style.RESET_ALL + "\nAssentos: " )).strip().capitalize().split(",")
+    if not cadeiras:
+        print("Não há Assentos Para Cancelar")
+        return menu()
+    else:
+        cadeiras.remove(Cchosed)
+
+    print("Assentos Atuais", cadeiras)
+
 
 def mapa():
     countR = 0

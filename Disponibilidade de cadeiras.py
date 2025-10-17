@@ -26,6 +26,13 @@ cadeiras = []
 busy = []
 free = []
 
+def retornar_menu():
+    escolha = int(input("1 - Retornar ao Menu Principal\n2- Sair\nSua Escolha: "))
+    if escolha == 1:
+        menu()
+    else:
+        exit()
+
 def escolha_assento():
     intro = "Olá, Seja Muito Bem Vindo."
     intro2 = "Escolha o Assento Desejado, Ex: (A1, B2, C3...): "
@@ -34,10 +41,11 @@ def escolha_assento():
         60) + Style.RESET_ALL + "\nAssentos: ")).strip().capitalize().split(",")
     cadeiras.append(Cchosed)
     print(cadeiras)
-    return
+    retornar_menu()
 
 def exit():
     print(Fore.BLACK + Back.RED + "Saindo do sistema..." + Style.RESET_ALL)
+
 
 def cancelar_assento():
     intro = "Qual Assento Gostaria de Remover? "
@@ -52,6 +60,7 @@ def cancelar_assento():
         cadeiras.remove(Cchosed)
 
     print("Assentos Atuais", cadeiras)
+    retornar_menu()
 
 def Assentos_Disp():
     if not free:
@@ -76,6 +85,8 @@ def Assentos_Disp():
             else:
                 print(f"{Fore.RED}{idt.center(5)}{Style.RESET_ALL}", end=" ")
         print()
+    retornar_menu()
+
 
 def estastistica():
     if not free and not busy:
@@ -103,6 +114,7 @@ def estastistica():
 
     print(f"Total de cadeiras: {total_cadeiras}")
     print("=" * 50)
+
 def mapa():
     global free, busy
     free = []
@@ -128,7 +140,7 @@ def mapa():
     # Mapa das cadeiras
     for i in linha:
         print(f"Fileira {i}: ", end="")
-        for num in range(1, 6):
+        for num in range(1, 11):
             idt = f"{i}{num}"
             color = random.choice(slot)
 
@@ -153,37 +165,7 @@ def mapa():
 
     print(f"\n{Fore.GREEN}Lugares Disponíveis: {len(free)} ({perct_livres:.1f}%){Style.RESET_ALL}")
     print(f"{Fore.RED}Lugares Ocupados: {len(busy)} ({perct_ocupadas:.1f}%){Style.RESET_ALL}")
-
-def map():
-    countR = 0
-    countG = 0
-    print(Fore.GREEN + "--" * 30)
-    texto = "-- Cinema com filmes --"
-    print(Fore.RED + Back.BLACK + texto.center(60) + Style.RESET_ALL)
-    print(Fore.GREEN + "--" * 30 + Style.RESET_ALL)
-    slot = [Fore.GREEN, Fore.RED]
-    for i in linha:
-        for num in range(1, 6):
-            idt = f"{i}{num}"
-            color = random.choice(slot)
-            if color == Fore.RED:
-                countR += 1
-                busy.append(idt)
-            else:
-                countG += 1
-                free.append(idt)
-            print(color, idt.center(10), end=" ")
-            print(Style.RESET_ALL, end=" ")
-        print()
-
-        perctf = (countG / (countR + countG)) * 100
-        perctb = (countR / (countR + countG)) * 100
-        print(f"Quantidade de Lugares Disponiveis: {slot[0]}{countG}" + Style.RESET_ALL)
-        print(f"Cadeiras livres: {slot[0]}{perctf:.0f}%\n{free}\n" + Style.RESET_ALL)
-        print(f"Quantidade de Lugares Ocupados: {slot[1]}{countR}" + Style.RESET_ALL)
-        print(f"Cadeiras Ocupadas: {slot[1]}{perctb:.0f}%\n{busy}\n" + Style.RESET_ALL)
-
-
+    retornar_menu()
 
 def menu():
     while True:

@@ -18,6 +18,115 @@
 # Ver histórico de operações
 # Salvar/recuperar estado
 
+"""
+📋 FASE 1: Estrutura de Dados Avançada (1-2 dias)
+
+Desafio: Modificar sua estrutura para suportar várias salas.
+
+Problemas para resolver:
+
+Como armazenar diferentes salas (A, B, C, D) com layouts diferentes?
+Como identificar unicamente cada cadeira (ex: "SalaA-A1", "SalaB-B3")?
+Como permitir que o usuário escolha qual sala visualizar?
+Dica Pense em:
+
+Usar dicionário de dicionários: salas = {"Sala A": {...}, "Sala B": {...}}
+Criar uma classe Sala que encapsule fileiras e cadeiras
+🗄️ FASE 2: Integração com Banco de Dados (2-3 dias)
+
+Desafio: Substituir as listas/dicionários em memória por SQLite.
+
+Problemas para resolver:
+
+Como modelar as tabelas (salas, cadeiras, reservas)?
+Como fazer consultas eficientes para ver disponibilidade?
+Como evitar reservas duplicadas?
+Tabelas sugeridas:
+
+salas (id, nome, fileiras, cadeiras_por_fileira)
+cadeiras (id, sala_id, identificador, estado)
+reservas (id, cadeira_id, cliente, data_reserva)
+🌐 FASE 3: Sistema Multilíngue (1-2 dias)
+
+Desafio: Adicionar suporte a Português, Inglês e Russo.
+
+Problemas para resolver:
+
+Como estruturar as traduções?
+Como permitir troca de idioma durante a execução?
+Como lidar com diferentes tamanhos de texto na interface?
+📊 FASE 4: Analytics e Power BI (2-3 dias)
+
+Desafio: Gerar relatórios e dados para análise.
+
+Problemas para resolver:
+
+Que métricas seriam úteis para o cinema?
+Como exportar dados de forma amigável para Power BI?
+Que visualizações fariam sentido?
+Métricas sugeridas:
+
+Taxa de ocupação por sala
+Horários mais populares
+Fileiras preferidas dos clientes
+Receita estimada
+💰 FASE 5: Sistema de Pagamentos (2-3 dias)
+
+Desafio: Simular um sistema de pagamento integrado.
+
+Problemas para resolver:
+
+Como calcular preços (VIP vs Normal, promoções)?
+Como gerar "comprovantes" de reserva?
+Como lidar com diferentes formas de pagamento?
+🎨 FASE 6: Interface Gráfica (3-4 dias)
+
+Desafio: Transformar seu sistema terminal em uma aplicação desktop.
+
+Problemas para resolver:
+
+Qual framework usar (Tkinter, PyQt, Kivy)?
+Como desenhar o mapa de assentos visualmente?
+Como tornar a interface intuitiva?
+📦 FASE 7: Executável e Distribuição (1-2 dias)
+
+Desafio: Empacotar sua aplicação como .exe/.app.
+
+Problemas para resolver:
+
+Como incluir todas as dependências?
+Como manter o banco de dados funcionando?
+Como criar um instalador?
+
+cinema_system/
+├── main.py              # Ponto de entrada
+├── database.py          # Tudo sobre banco de dados
+├── sala.py             # Classe Sala e lógica de assentos
+├── reservas.py         # Gerenciamento de reservas
+├── interface.py        # Menus e interface com usuário
+├── relatorios.py       # Geração de relatórios
+└── utils.py            # Funções auxiliares
+
+projeto_cinema/
+├── main.py
+├── core/               # Lógica principal
+│   ├── __init__.py
+│   ├── sala_manager.py
+│   └── reserva_manager.py
+├── data/              # Banco de dados
+│   ├── database.py
+│   └── models.py
+├── ui/               # Interface
+│   ├── menus.py
+│   └── display.py
+└── utils/            # Ferramentas
+    ├── validators.py
+    └── helpers.py
+"""
+
+
+
+
 from colorama import Fore, Back, Style
 import random
 import json

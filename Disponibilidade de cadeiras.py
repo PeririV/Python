@@ -17,214 +17,333 @@
 # Cancelar reservas
 # Ver histórico de operações
 # Salvar/recuperar estado
-from itertools import count
 
 from colorama import Fore, Back, Style
 import random
-
-cadeiras = []
-busy = []
-free = []
-
-def retornar_menu():
-    escolha = int(input("1 - Retornar ao Menu Principal\n2- Sair\nSua Escolha: "))
-    if escolha == 1:
-        menu()
-    else:
-        exit()
-
-def escolha_assento():
-    intro = "Olá, Seja Muito Bem Vindo."
-    intro2 = "Escolha o Assento Desejado, Ex: (A1, B2, C3...): "
-    Cchosed = str(input(Fore.LIGHTYELLOW_EX + Back.BLACK + intro.center(
-        60) + Style.RESET_ALL + "\n" + Fore.LIGHTYELLOW_EX + Back.BLACK + intro2.center(
-        60) + Style.RESET_ALL + "\nAssentos: ")).strip().capitalize().split(",")
-    cadeiras.append(Cchosed)
-    print(cadeiras)
-    retornar_menu()
-
-def exit():
-    print(Fore.BLACK + Back.RED + "Saindo do sistema..." + Style.RESET_ALL)
+import json
+from datetime import datetime
 
 
-def cancelar_assento():
-    intro = "Qual Assento Gostaria de Remover? "
-    intro2 = "..." * 15
-    Cchosed = str(input(Fore.LIGHTYELLOW_EX + Back.BLACK + intro.center(
-        60) + Style.RESET_ALL + "\n" + Fore.LIGHTYELLOW_EX + Back.BLACK + intro2.center(
-        60) + Style.RESET_ALL + "\nAssentos: " )).strip().capitalize().split(",")
-    if not cadeiras:
-        print("Não há Assentos Para Cancelar")
-        return menu()
-    else:
-        cadeiras.remove(Cchosed)
+class Cinema:
+    def __init__(self):
+        self.fileiras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+        self.cadeiras_por_fileira = 10
+        self.estado_cadeiras = {}  # 'A1': True (ocupada), False (livre)
+        self.historico = []
+        self.cor_livre = Fore.GREEN
+        self.cor_ocupada = Fore.RED
+        self.arquivo_estado = "estado_cinema.json"
+        self.inicializar_sala()
 
-    print("Assentos Atuais", cadeiras)
-    retornar_menu()
+    def inicializar_sala(self):
+        """Inicializa a sala com algumas cadeiras ocupadas aleatoriamente"""
+        for fileira in self.fileiras:
+            for numero in range(1, self.cadeiras_por_fileira + 1):
+                cadeira_id = f"{fileira}{numero}"
+                # 30% de chance de estar ocupada inicialmente
+                self.estado_cadeiras[cadeira_id] = random.random() < 0.3
 
-def Assentos_Disp():
-    if not free:
-        print(f"{Fore.YELLOW}Não há cadeiras disponíveis no momento.{Style.RESET_ALL}")
-        return
+        self.registrar_operacao("Sistema", "Sala inicializada")
 
-    print("\n" + "-" * 40)
-    print(f"{Fore.GREEN}CADEIRAS DISPONÍVEIS{Style.RESET_ALL}".center(40))
-    print("-" * 40)
+    def obter_cadeiras_livres(self):
+        """Retorna lista de cadeiras livres usando list comprehension"""
+        return [cadeira for cadeira, ocupada in self.estado_cadeiras.items() if not ocupada]
 
-    print(f"{Fore.GREEN}Cadeiras livres: {len(free)} cadeira(s){Style.RESET_ALL}")
-    print("Cadeiras:", ", ".join(free))
+    def obter_cadeiras_ocupadas(self):
+        """Retorna lista de cadeiras ocupadas usando list comprehension"""
+        return [cadeira for cadeira, ocupada in self.estado_cadeiras.items() if ocupada]
 
-    # Mostrar em formato de grid
-    print("\nMapa de Assentos Disponíveis:")
-    linha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-    for i in linha:
-        for num in range(1, 6):
-            idt = f"{i}{num}"
-            if idt in free:
-                print(f"{Fore.GREEN}{idt.center(5)}{Style.RESET_ALL}", end=" ")
-            else:
-                print(f"{Fore.RED}{idt.center(5)}{Style.RESET_ALL}", end=" ")
-        print()
-        retornar_menu()
+    def validar_cadeira(self, cadeira):
+        """Valida se o formato da cadeira é válido"""
+        if len(cadeira) < 2:
+            return False
 
-
-def estastistica():
-    if not free and not busy:
-        print("Nenhum dado disponível para estatísticas.")
-        return
-
-    total_cadeiras = len(free) + len(busy)
-
-    if total_cadeiras > 0:
-        perct_livres = (len(free) / total_cadeiras) * 100
-        perct_ocupadas = (len(busy) / total_cadeiras) * 100
-    else:
-        perct_livres = 0
-        perct_ocupadas = 0
-
-    print("\n" + "=" * 50)
-    print("ESTATÍSTICAS DO CINEMA".center(50))
-    print("=" * 50)
-
-    print(f"{Fore.GREEN}Cadeiras Livres: {len(free)} ({perct_livres:.1f}%){Style.RESET_ALL}")
-    print(f"Cadeiras livres: {free}")
-
-    print(f"{Fore.RED}Cadeiras Ocupadas: {len(busy)} ({perct_ocupadas:.1f}%){Style.RESET_ALL}")
-    print(f"Cadeiras ocupadas: {busy}")
-
-    print(f"Total de cadeiras: {total_cadeiras}")
-    print("=" * 50)
-
-def mapa():
-    global free, busy
-    free = []
-    busy = []
-
-    print("\n" + Fore.GREEN + "==" * 30)
-    texto = "CINEMA - MAPA COMPLETO"
-    print(Fore.RED + Back.BLACK + texto.center(60) + Style.RESET_ALL)
-    print(Fore.GREEN + "==" * 30 + Style.RESET_ALL)
-
-    # Cabeçalho da tela
-    print(f"{Fore.CYAN}TELA{Style.RESET_ALL}".center(60))
-    print(f"{Fore.CYAN}■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■{Style.RESET_ALL}".center(60))
-    print()
-
-    # Legendas
-    print(f"{Fore.GREEN}□ Disponível{Style.RESET_ALL} | {Fore.RED}■ Ocupado{Style.RESET_ALL}")
-    print()
-
-    linha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-    slot = [Fore.GREEN, Fore.RED]
-
-    # Mapa das cadeiras
-    for i in linha:
-        print(f"Fileira {i}: ", end="")
-        for num in range(1, 11):
-            idt = f"{i}{num}"
-            color = random.choice(slot)
-
-            if color == Fore.RED:
-                busy.append(idt)
-            else:
-                free.append(idt)
-
-            # Usar símbolos visuais
-            simbolo = "■" if color == Fore.RED else "□"
-            print(color + simbolo + Style.RESET_ALL, end="  ")
-        print()  # Nova linha para próxima fileira
-
-    # Estatísticas após gerar o mapa
-    total_cadeiras = len(free) + len(busy)
-    if total_cadeiras > 0:
-        perct_livres = (len(free) / total_cadeiras) * 100
-        perct_ocupadas = (len(busy) / total_cadeiras) * 100
-    else:
-        perct_livres = 0
-        perct_ocupadas = 0
-
-    print(f"\n{Fore.GREEN}Lugares Disponíveis: {len(free)} ({perct_livres:.1f}%){Style.RESET_ALL}")
-    print(f"{Fore.RED}Lugares Ocupados: {len(busy)} ({perct_ocupadas:.1f}%){Style.RESET_ALL}")
-    retornar_menu()
-
-def menu():
-    while True:
-        print(Fore.GREEN + "--" * 30 + Style.RESET_ALL)
-        texto = "-- MENU DO CINEMA --"
-        print(Fore.RED + Back.BLACK + texto.center(60) + Style.RESET_ALL)
-        print(Fore.GREEN + "--" * 30 + Style.RESET_ALL)
-
-        # Menu options
-        print("Selecione uma das opções abaixo:")
-        print("1 - Ver Mapa Das Cadeiras")
-        print("2 - Escolher Assentos")
-        print("3 - Cancelar Assentos")
-        print("4 - Assentos Disponiveis")
-        print("5 - Estastiticas Dos Assentos")
-        print("6 - Sair")
-
-        # Input with styling
-        option = int(input(Fore.LIGHTYELLOW_EX + Back.BLACK + "Escolha: " + Style.RESET_ALL))
-        print(f"Você selecionou a opção: {option}")
-
+        fileira = cadeira[0].upper()
         try:
-            option_int = int(option)
+            numero = int(cadeira[1:])
+            return fileira in self.fileiras and 1 <= numero <= self.cadeiras_por_fileira
         except ValueError:
-            print("Por favor, digite um número válido.")
-            continue
+            return False
 
-        if option == 1:
-            mapa()
+    def registrar_operacao(self, usuario, operacao):
+        """Registra operação no histórico"""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.historico.append({
+            'timestamp': timestamp,
+            'usuario': usuario,
+            'operacao': operacao
+        })
+
+    def mostrar_mapa_colorido(self):
+        """Mostra mapa visual colorido da sala"""
+        print(f"\n{Fore.CYAN}{'MAPAS DA SALA DE CINEMA':^40}{Style.RESET_ALL}")
+        print(f"{Fore.CYAN}{'=' * 40}{Style.RESET_ALL}")
+
+        # Cabeçalho da tela
+        print(f"\n{Fore.CYAN}{' ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ ':*^40}{Style.RESET_ALL}\n")
+
+        # Legendas
+        print(f"{self.cor_livre}□ Disponível{Style.RESET_ALL} | {self.cor_ocupada}■ Ocupado{Style.RESET_ALL}\n")
+
+        # Mapa das cadeiras
+        print("   " + "".join(f"{i:^3}" for i in range(1, self.cadeiras_por_fileira + 1)))
+
+        for fileira in self.fileiras:
+            print(f"{fileira} |", end=" ")
+            for numero in range(1, self.cadeiras_por_fileira + 1):
+                cadeira_id = f"{fileira}{numero}"
+                if self.estado_cadeiras[cadeira_id]:
+                    simbolo = f"{self.cor_ocupada}■{Style.RESET_ALL}"
+                else:
+                    simbolo = f"{self.cor_livre}□{Style.RESET_ALL}"
+                print(simbolo, end="  ")
+            print()
+
+    def reservar_cadeiras(self, usuario):
+        """Permite reservar múltiplas cadeiras"""
+        cadeiras_livres = self.obter_cadeiras_livres()
+
+        if not cadeiras_livres:
+            print(f"{Fore.RED}Não há cadeiras disponíveis para reserva.{Style.RESET_ALL}")
             return
 
-        elif option == 2:
-            escolha_assento()
-        elif option == 3:
-            cancelar_assento()
-        elif option == 4:
-            Assentos_Disp()
-        elif option == 5:
-            estastistica()
-        elif option == 6:
-            exit()
-            break
+        print(f"\n{Fore.GREEN}Cadeiras disponíveis: {', '.join(cadeiras_livres)}{Style.RESET_ALL}")
+
+        try:
+            entrada = input("Digite as cadeiras para reservar (ex: A1,B2,C3): ").strip()
+            cadeiras_selecionadas = [cadeira.strip().upper() for cadeira in entrada.split(',')]
+
+            cadeiras_validas = []
+            cadeiras_invalidas = []
+
+            for cadeira in cadeiras_selecionadas:
+                if self.validar_cadeira(cadeira):
+                    if not self.estado_cadeiras[cadeira]:
+                        cadeiras_validas.append(cadeira)
+                    else:
+                        print(f"{Fore.RED}Cadeira {cadeira} já está ocupada.{Style.RESET_ALL}")
+                else:
+                    cadeiras_invalidas.append(cadeira)
+
+            if cadeiras_invalidas:
+                print(f"{Fore.RED}Cadeiras inválidas: {', '.join(cadeiras_invalidas)}{Style.RESET_ALL}")
+
+            if cadeiras_validas:
+                for cadeira in cadeiras_validas:
+                    self.estado_cadeiras[cadeira] = True
+
+                operacao = f"Reserva: {', '.join(cadeiras_validas)}"
+                self.registrar_operacao(usuario, operacao)
+                print(f"{Fore.GREEN}Reserva confirmada para: {', '.join(cadeiras_validas)}{Style.RESET_ALL}")
+            else:
+                print(f"{Fore.YELLOW}Nenhuma cadeira válida foi selecionada.{Style.RESET_ALL}")
+
+        except Exception as e:
+            print(f"{Fore.RED}Erro ao processar reserva: {e}{Style.RESET_ALL}")
+
+    def cancelar_reservas(self, usuario):
+        """Permite cancelar reservas de múltiplas cadeiras"""
+        cadeiras_ocupadas = self.obter_cadeiras_ocupadas()
+
+        if not cadeiras_ocupadas:
+            print(f"{Fore.YELLOW}Não há cadeiras ocupadas para cancelar.{Style.RESET_ALL}")
+            return
+
+        print(f"\n{Fore.RED}Cadeiras ocupadas: {', '.join(cadeiras_ocupadas)}{Style.RESET_ALL}")
+
+        try:
+            entrada = input("Digite as cadeiras para cancelar (ex: A1,B2,C3): ").strip()
+            cadeiras_selecionadas = [cadeira.strip().upper() for cadeira in entrada.split(',')]
+
+            cadeiras_validas = []
+            cadeiras_invalidas = []
+
+            for cadeira in cadeiras_selecionadas:
+                if self.validar_cadeira(cadeira):
+                    if self.estado_cadeiras[cadeira]:
+                        cadeiras_validas.append(cadeira)
+                    else:
+                        print(f"{Fore.YELLOW}Cadeira {cadeira} já está livre.{Style.RESET_ALL}")
+                else:
+                    cadeiras_invalidas.append(cadeira)
+
+            if cadeiras_invalidas:
+                print(f"{Fore.RED}Cadeiras inválidas: {', '.join(cadeiras_invalidas)}{Style.RESET_ALL}")
+
+            if cadeiras_validas:
+                for cadeira in cadeiras_validas:
+                    self.estado_cadeiras[cadeira] = False
+
+                operacao = f"Cancelamento: {', '.join(cadeiras_validas)}"
+                self.registrar_operacao(usuario, operacao)
+                print(f"{Fore.GREEN}Cancelamento confirmado para: {', '.join(cadeiras_validas)}{Style.RESET_ALL}")
+            else:
+                print(f"{Fore.YELLOW}Nenhuma cadeira válida foi selecionada.{Style.RESET_ALL}")
+
+        except Exception as e:
+            print(f"{Fore.RED}Erro ao processar cancelamento: {e}{Style.RESET_ALL}")
+
+    def listar_cadeiras_disponiveis(self):
+        """Lista todas as cadeiras disponíveis"""
+        cadeiras_livres = self.obter_cadeiras_livres()
+
+        print(f"\n{Fore.GREEN}{'CADEIRAS DISPONÍVEIS':^40}{Style.RESET_ALL}")
+        print(f"{Fore.GREEN}{'=' * 40}{Style.RESET_ALL}")
+
+        if cadeiras_livres:
+            print(f"Total: {len(cadeiras_livres)} cadeira(s)")
+            print("Cadeiras:", ", ".join(cadeiras_livres))
+
+            # Mostrar em formato de grid
+            print("\nMapa de Disponíveis:")
+            for fileira in self.fileiras:
+                for numero in range(1, self.cadeiras_por_fileira + 1):
+                    cadeira_id = f"{fileira}{numero}"
+                    if cadeira_id in cadeiras_livres:
+                        print(f"{self.cor_livre}{cadeira_id:^5}{Style.RESET_ALL}", end=" ")
+                    else:
+                        print(f"{' ':^5}", end=" ")
+                print()
         else:
-            print(Fore.RED + Back.BLACK + "Opção Invalida, Tente Novamente!" + Style.RESET_ALL)
-            continue
-        break
+            print(f"{Fore.YELLOW}Não há cadeiras disponíveis.{Style.RESET_ALL}")
 
-    return int(option)
+    def listar_cadeiras_indisponiveis(self):
+        """Lista todas as cadeiras indisponíveis"""
+        cadeiras_ocupadas = self.obter_cadeiras_ocupadas()
+
+        print(f"\n{Fore.RED}{'CADEIRAS INDISPONÍVEIS':^40}{Style.RESET_ALL}")
+        print(f"{Fore.RED}{'=' * 40}{Style.RESET_ALL}")
+
+        if cadeiras_ocupadas:
+            print(f"Total: {len(cadeiras_ocupadas)} cadeira(s)")
+            print("Cadeiras:", ", ".join(cadeiras_ocupadas))
+        else:
+            print(f"{Fore.GREEN}Todas as cadeiras estão disponíveis!{Style.RESET_ALL}")
+
+    def mostrar_estatisticas(self):
+        """Calcula e mostra estatísticas totais"""
+        total_cadeiras = len(self.estado_cadeiras)
+        cadeiras_livres = len(self.obter_cadeiras_livres())
+        cadeiras_ocupadas = len(self.obter_cadeiras_ocupadas())
+
+        if total_cadeiras > 0:
+            percentual_livres = (cadeiras_livres / total_cadeiras) * 100
+            percentual_ocupadas = (cadeiras_ocupadas / total_cadeiras) * 100
+        else:
+            percentual_livres = percentual_ocupadas = 0
+
+        print(f"\n{Fore.CYAN}{'ESTATÍSTICAS DO CINEMA':^50}{Style.RESET_ALL}")
+        print(f"{Fore.CYAN}{'=' * 50}{Style.RESET_ALL}")
+
+        print(f"{Fore.GREEN}Cadeiras Livres: {cadeiras_livres} ({percentual_livres:.1f}%){Style.RESET_ALL}")
+        print(f"{Fore.RED}Cadeiras Ocupadas: {cadeiras_ocupadas} ({percentual_ocupadas:.1f}%){Style.RESET_ALL}")
+        print(f"Total de Cadeiras: {total_cadeiras}")
+        print(f"Fileiras: {', '.join(self.fileiras)}")
+        print(f"Cadeiras por fileira: {self.cadeiras_por_fileira}")
+        print(f"{Fore.CYAN}{'=' * 50}{Style.RESET_ALL}")
+
+    def mostrar_historico(self):
+        """Mostra o histórico de operações"""
+        print(f"\n{Fore.MAGENTA}{'HISTÓRICO DE OPERAÇÕES':^60}{Style.RESET_ALL}")
+        print(f"{Fore.MAGENTA}{'=' * 60}{Style.RESET_ALL}")
+
+        if not self.historico:
+            print(f"{Fore.YELLOW}Nenhuma operação registrada.{Style.RESET_ALL}")
+            return
+
+        for operacao in self.historico[-10:]:  # Mostrar últimas 10 operações
+            print(f"{operacao['timestamp']} - {operacao['usuario']}: {operacao['operacao']}")
+
+    def salvar_estado(self):
+        """Salva o estado atual do cinema em arquivo"""
+        try:
+            estado = {
+                'estado_cadeiras': self.estado_cadeiras,
+                'historico': self.historico
+            }
+
+            with open(self.arquivo_estado, 'w') as f:
+                json.dump(estado, f)
+
+            print(f"{Fore.GREEN}Estado salvo com sucesso!{Style.RESET_ALL}")
+        except Exception as e:
+            print(f"{Fore.RED}Erro ao salvar estado: {e}{Style.RESET_ALL}")
+
+    def recuperar_estado(self):
+        """Recupera o estado do cinema de arquivo"""
+        try:
+            with open(self.arquivo_estado, 'r') as f:
+                estado = json.load(f)
+
+            self.estado_cadeiras = estado['estado_cadeiras']
+            self.historico = estado['historico']
+
+            print(f"{Fore.GREEN}Estado recuperado com sucesso!{Style.RESET_ALL}")
+            return True
+        except FileNotFoundError:
+            print(f"{Fore.YELLOW}Nenhum estado anterior encontrado.{Style.RESET_ALL}")
+            return False
+        except Exception as e:
+            print(f"{Fore.RED}Erro ao recuperar estado: {e}{Style.RESET_ALL}")
+            return False
 
 
-menu()
+def menu_principal():
+    """Menu principal do sistema de cinema"""
+    cinema = Cinema()
+
+    # Tentar recuperar estado anterior
+    cinema.recuperar_estado()
+
+    while True:
+        print(f"\n{Fore.CYAN}{'=' * 50}{Style.RESET_ALL}")
+        print(f"{Fore.CYAN}{'SISTEMA DE GERENCIAMENTO DE CINEMA':^50}{Style.RESET_ALL}")
+        print(f"{Fore.CYAN}{'=' * 50}{Style.RESET_ALL}")
+
+        print("\nOpções disponíveis:")
+        print("1 - Ver mapa colorido da sala")
+        print("2 - Reservar cadeiras")
+        print("3 - Cancelar reservas")
+        print("4 - Listar cadeiras disponíveis")
+        print("5 - Listar cadeiras indisponíveis")
+        print("6 - Mostrar estatísticas")
+        print("7 - Ver histórico de operações")
+        print("8 - Salvar estado atual")
+        print("9 - Sair do sistema")
+
+        try:
+            opcao = input(f"\n{Fore.YELLOW}Escolha uma opção (1-9): {Style.RESET_ALL}").strip()
+
+            if opcao == '1':
+                cinema.mostrar_mapa_colorido()
+            elif opcao == '2':
+                usuario = input("Digite seu nome: ").strip()
+                cinema.reservar_cadeiras(usuario)
+            elif opcao == '3':
+                usuario = input("Digite seu nome: ").strip()
+                cinema.cancelar_reservas(usuario)
+            elif opcao == '4':
+                cinema.listar_cadeiras_disponiveis()
+            elif opcao == '5':
+                cinema.listar_cadeiras_indisponiveis()
+            elif opcao == '6':
+                cinema.mostrar_estatisticas()
+            elif opcao == '7':
+                cinema.mostrar_historico()
+            elif opcao == '8':
+                cinema.salvar_estado()
+            elif opcao == '9':
+                print(f"{Fore.GREEN}Saindo do sistema...{Style.RESET_ALL}")
+                break
+            else:
+                print(f"{Fore.RED}Opção inválida! Escolha entre 1 e 9.{Style.RESET_ALL}")
+
+        except KeyboardInterrupt:
+            print(f"\n{Fore.YELLOW}Saindo do sistema...{Style.RESET_ALL}")
+            break
+        except Exception as e:
+            print(f"{Fore.RED}Erro inesperado: {e}{Style.RESET_ALL}")
 
 
-
-
-
-
-
-
-
-
-
+if __name__ == "__main__":
+    menu_principal()

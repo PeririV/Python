@@ -75,7 +75,7 @@ def Assentos_Disp():
     print("Cadeiras:", ", ".join(free))
 
     # Mostrar em formato de grid
-    print("\nMapa de disponíveis:")
+    print("\nMapa de Assentos Disponíveis:")
     linha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
     for i in linha:
         for num in range(1, 6):
@@ -85,7 +85,7 @@ def Assentos_Disp():
             else:
                 print(f"{Fore.RED}{idt.center(5)}{Style.RESET_ALL}", end=" ")
         print()
-    retornar_menu()
+        retornar_menu()
 
 
 def estastistica():

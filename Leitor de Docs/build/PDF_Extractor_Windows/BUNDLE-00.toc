@@ -1,0 +1,4 @@
+([('PDF_Extractor_Windows',
+   '/Users/ianchristopher/PycharmProjects/Python/Leitor de '
+   'Docs/dist/PDF_Extractor_Windows',
+   'EXECUTABLE')],)

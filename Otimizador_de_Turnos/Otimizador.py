@@ -1,21 +1,36 @@
 import random
-#import pandas as pd, numpy as np
-#import matplotlib
-#import seaborn
-#from pulp import *
+from datetime import datetime, timedelta
 
-Staff = ("Enfermeiro", "Médico", "Cirurgião")
-Turno = {"Mãnha": 8, "Tarde": 8, "Noite": 12}
+hojea = datetime.now()
+hoje = hojea.date() + timedelta(days=0)
+amanha = hojea.date() + timedelta(days=1)
+print(amanha)
+print(hoje)
 
+Staff = [{"id": "F1", "Nome": "Ian",  "Cargo": "Enfermeiro"},
+         {"id": "F2", "Nome": "Django",  "Cargo": "Enfermeiro"},
+         {"id": "F3", "Nome": "José", "Cargo": "Médico"},
+         {"id": "F4", "Nome": "Juju", "Cargo": "Tecnico"}]
+
+Turno = [{"Turno": "Mãnha", "Horario": 8},
+         {"Turno": "Tarde", "Horario": 8},
+         {"Turno": "Noite", "Horario": 12},
+         {"Turno": "Folga", "Horario": 24}]
+Schedule = []
 
 def __TT():
     i = 0
-    while i < 3 :
-        i+=1
-        TS = random.randint(0,2)
+    while len(Schedule) < 4:
+        TS = random.randint(0,3)
         TS = int(TS)
-        print(Staff[TS])
-        if i == 3:
+        if TS not in Schedule:
+            Schedule.append(TS)
+        elif len(Schedule) >= 4:
             break
+    for n in Schedule:
+        print(Staff[n]["Nome"], Turno[n]["Turno"], Turno[n]["Horario"])
 
 __TT()
+
+def __Sched():
+    r = 1+1
